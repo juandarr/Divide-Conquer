@@ -9,6 +9,8 @@ This program multiplies two numbers following different methods:
 x = '3141592653589793238462643383279502884197169399375105820974944592'
 y = '2718281828459045235360287471352662497757247093699959574966967627'
 
+#x = '123'
+#y = '605'
 '''
 Multiplies an n digit number x with an n digit number y
 '''
@@ -38,7 +40,7 @@ def mul(x,y):
 Recursive multiplication - Makes 4 recursive calls
 '''
 def recursive_mul(x,y):
-    n = len(x)
+    n = min(len(x),len(y))
     if n==1:
         return mul(x,y)
     nh = n//2
@@ -48,7 +50,7 @@ def recursive_mul(x,y):
     ad = recursive_mul(a, d)
     bc = recursive_mul(b, c)
     e = ad + bc
-    return (10**(n))*ac+(10**(nh))*e+bd
+    return (10**(2*nh))*ac+(10**nh)*e+bd
 
 '''
 Karatsuba multiplcation - Makes 3 recursive calls
@@ -63,7 +65,7 @@ def recursive_mul_karatsuba(x,y):
     ac = recursive_mul_karatsuba(a, c)
     bd = recursive_mul_karatsuba(b, d)
     e =  recursive_mul_karatsuba(str(int(a)+int(b)), str(int(c)+int(d))) - ac - bd
-    return (10**(n))*ac+(10**(nh))*e+bd
+    return (10**(2*nh))*ac+(10**nh)*e+bd
 
 print('Real product:                         ', int(x)*int(y))
 print('Old school multiplication:            ', mul(x,y))
