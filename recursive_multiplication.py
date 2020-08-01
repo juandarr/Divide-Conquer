@@ -1,17 +1,16 @@
 '''
-This program multiplies two numbers following a recursive algorithm approach
+This program multiplies two numbers following different methods:
+    * Old school multiplication
+    * Recursive multiplication
+    * Karatsuba multiplication
 '''
-
-#x = '1957'
-#y = '2834'
 
 x = '3141592653589793238462643383279502884197169399375105820974944592'
 y = '2718281828459045235360287471352662497757247093699959574966967627'
 
 '''
-Multiplies a one digit number x and an n digit number y
+Multiplies an n digit number x with an n digit number y
 '''
-
 def mul(x,y):
     total = 0
     total_dec = 1
@@ -34,32 +33,38 @@ def mul(x,y):
         total_dec *= 10
     return total
         
-
+'''
+Recursive multiplication - Makes 4 recursive calls
+'''
 def recursive_mul(x,y):
     n = len(x)
     if n==1:
         return mul(x,y)
     a,b,c,d = x[0:n//2], x[n//2:],y[0:n//2], y[n//2:]
-    ac = rec_mul(a, c)
-    bd = rec_mul(b, d)
-    ad = rec_mul(a, d)
-    bc = rec_mul(b, c)
+    ac = recursive_mul(a, c)
+    bd = recursive_mul(b, d)
+    ad = recursive_mul(a, d)
+    bc = recursive_mul(b, c)
     e = ad + bc
     return (10**(n))*ac+(10**(n//2))*e+bd
 
+'''
+Karatsuba multiplcation - Makes 3 recursive calls
+TODO: The output  is not correct yet
+'''
 def recursive_mul_karatsuba(x,y):
-    n = len(x)
+    n = min(len(x),len(y))
     if n==1:
         return int(x)*int(y)
     nh = n//2
     a,b,c,d = x[:-nh], x[-nh:],y[:-nh], y[-nh:]
-    ac = rec_mul(a, c)
-    bd = rec_mul(b, d)
-    e = rec_mul(str(int(a)+int(b)), str(int(c)+int(d)))
+    ac = recursive_mul_karatsuba(a, c)
+    bd = recursive_mul_karatsuba(b, d)
+    e = recursive_mul_karatsuba(str(int(a)+int(b)), str(int(c)+int(d)))
     e -= (ac+bd)
     return (10**(n))*ac+(10**(nh))*e+bd
 
 print('Real product:                         ', int(x)*int(y))
-print('School multiplication:                ', mul(x,y))
+print('Old school multiplication:            ', mul(x,y))
 print('Recursive multiplication:             ', recursive_mul(x,y))
 print('Recursive multiplication - Karatsuba: ', recursive_mul_karatsuba(x,y))
