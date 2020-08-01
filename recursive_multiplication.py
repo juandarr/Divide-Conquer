@@ -5,6 +5,7 @@ This program multiplies two numbers following different methods:
     * Karatsuba multiplication
 '''
 
+# These are the 64 digit numbers to be multiplied
 x = '3141592653589793238462643383279502884197169399375105820974944592'
 y = '2718281828459045235360287471352662497757247093699959574966967627'
 
@@ -40,13 +41,14 @@ def recursive_mul(x,y):
     n = len(x)
     if n==1:
         return mul(x,y)
-    a,b,c,d = x[0:n//2], x[n//2:],y[0:n//2], y[n//2:]
+    nh = n//2
+    a,b,c,d = x[:-nh], x[-nh:],y[:-nh], y[-nh:]
     ac = recursive_mul(a, c)
     bd = recursive_mul(b, d)
     ad = recursive_mul(a, d)
     bc = recursive_mul(b, c)
     e = ad + bc
-    return (10**(n))*ac+(10**(n//2))*e+bd
+    return (10**(n))*ac+(10**(nh))*e+bd
 
 '''
 Karatsuba multiplcation - Makes 3 recursive calls
@@ -55,13 +57,12 @@ TODO: The output  is not correct yet
 def recursive_mul_karatsuba(x,y):
     n = min(len(x),len(y))
     if n==1:
-        return int(x)*int(y)
+        return mul(x,y)
     nh = n//2
     a,b,c,d = x[:-nh], x[-nh:],y[:-nh], y[-nh:]
     ac = recursive_mul_karatsuba(a, c)
     bd = recursive_mul_karatsuba(b, d)
-    e = recursive_mul_karatsuba(str(int(a)+int(b)), str(int(c)+int(d)))
-    e -= (ac+bd)
+    e =  recursive_mul_karatsuba(str(int(a)+int(b)), str(int(c)+int(d))) - ac - bd
     return (10**(n))*ac+(10**(nh))*e+bd
 
 print('Real product:                         ', int(x)*int(y))
