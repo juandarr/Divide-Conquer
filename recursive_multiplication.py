@@ -6,11 +6,11 @@ This program multiplies two numbers following different methods:
 '''
 
 # These are the 64 digit numbers to be multiplied
-x = '3141592653589793238462643383279502884197169399375105820974944592'
-y = '2718281828459045235360287471352662497757247093699959574966967627'
+test_set =[('3141592653589793238462643383279502884197169399375105820974944592','2718281828459045235360287471352662497757247093699959574966967627')]
 
-#x = '123'
-#y = '605'
+# Test numbers with different numbers of digits - uncomment to  include in test set
+test_set += [('1234355','60533')]
+
 '''
 Multiplies an n digit number x with an n digit number y
 '''
@@ -67,7 +67,11 @@ def recursive_mul_karatsuba(x,y):
     e =  recursive_mul_karatsuba(str(int(a)+int(b)), str(int(c)+int(d))) - ac - bd
     return (10**(2*nh))*ac+(10**nh)*e+bd
 
-print('Real product:                         ', int(x)*int(y))
-print('Old school multiplication:            ', mul(x,y))
-print('Recursive multiplication:             ', recursive_mul(x,y))
-print('Recursive multiplication - Karatsuba: ', recursive_mul_karatsuba(x,y))
+for test in test_set:
+    x,y = test[0], test[1]
+    print('{0} x {1}'.format(x,y))
+    print('Reference:                            {0}'.format(int(x)*int(y)))
+    print('Old school multiplication:            {0}'.format(mul(x,y)))
+    print('Recursive multiplication:             {0}'.format(recursive_mul(x,y)))
+    print('Karatsuba multiplication:             {0}'.format(recursive_mul_karatsuba(x,y)))
+    print('\n-----------------------------------------------------------------------')
